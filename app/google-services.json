@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "72077698906",
+    "firebase_url": "https://labandroid-28ac7.firebaseio.com",
+    "project_id": "labandroid-28ac7",
+    "storage_bucket": "labandroid-28ac7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72077698906:android:f76a655aa733c1d0",
+        "android_client_info": {
+          "package_name": "cs.sci.ku.labfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72077698906-euvll3h1t34aqb9iua1c7vcfdnqkg85b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJsTpQYEm9Lf_EAfCzRr5uCGZ4wt9td1Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
