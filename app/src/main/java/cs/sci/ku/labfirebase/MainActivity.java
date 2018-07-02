@@ -1,8 +1,10 @@
 package cs.sci.ku.labfirebase;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +21,26 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class MainActivity extends AppCompatActivity {
+    private final String CH1 = "Chanel 1";
     int id;
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Chanel Test 1";
+            String description = "Chenel for test 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CH1, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
     public void clk(View view){
-        NotificationCompat.Builder b = new NotificationCompat.Builder(this);
+        createNotificationChannel();
+        NotificationCompat.Builder b = new NotificationCompat.Builder(this, CH1);
         b.setSmallIcon(android.R.drawable.arrow_up_float)
                 .setContentText("my title")
                 .setContentText("my content text")
@@ -29,50 +48,13 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(id++, b.build());
 
-
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        FirebaseManager.getInstance().start();
-//        FirebaseInstanceId.getInstance();
-//        FirebaseMessaging.getInstance();
-
-        startService(new Intent(this, DatabaseService.class));
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
-//        ref.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext());
-//                b.setSmallIcon(android.R.drawable.arrow_up_float)
-//                        .setContentText("noti from firebase")
-//                        .setContentText(dataSnapshot.getValue().toString())
-//                        .setAutoCancel(true);
-//                NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                nm.notify(0, b.build());
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+//        startService(new Intent(this, DatabaseService.class));
+        startService(new Intent(this, MyFirebaseMessagingService.class));
     }
 }

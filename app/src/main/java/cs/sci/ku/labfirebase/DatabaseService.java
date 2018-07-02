@@ -1,10 +1,12 @@
 package cs.sci.ku.labfirebase;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PersistableBundle;
@@ -28,6 +30,7 @@ public class DatabaseService extends Service {
     FirebaseDatabase database;
     public static DatabaseReference ref;
     private int id;
+    private final String CH1 = "CH1";
 
 
     @Nullable
@@ -58,12 +61,31 @@ public class DatabaseService extends Service {
         return START_STICKY;
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Chanel Test 1";
+            String description = "Chenel for test 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CH1, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void ListenerForRequestDone() {
+        createNotificationChannel();
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
                 String name = dataSnapshot.getValue().toString();
-                NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext());
+                Log.d("DB Listener", name);
+                NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext(), CH1);
                 b.setSmallIcon(android.R.drawable.arrow_up_float)
                         .setContentTitle("New User")
                         .setContentText("name " + name)
